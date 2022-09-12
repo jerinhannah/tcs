@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Detecting the route change in AngularJS
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-route.min.js">
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="tree.css">
+    <link rel="stylesheet" href="example.css">
+   
+</head>
+
+<body>
+    
+    <div ng-app="mainApp">
+        <p>
+            <a href="#addStudent">List of Patient </a>
+        </p>
+        <!--<p>
+            <a href="#viewStudents">
+                Display Student
+            </a>
+        </p>-->
+        <div ng-view></div>
+
+        <script type="text/ng-template" id="addStudent.htm">
+						            <h2> List of Patient</h2> 
+
+                                    <table>
+                                        <tr ng-repeat="patient in myObj">
+                                            <td>{{ patient.name }}</td>
+                                            <td><button ng-click="viewDetail(patient)">View</button></td>
+                                        </tr>
+                                    </table>
+		</script>
+        <script type="text/ng-template" id="viewStudents.htm">
+                                   <nav style="background-color: blue;height: 60px;">
+                                        <a class="" style="color: white;" href="#">IAW-EM</a>
+                                        
+                                        <!-- <ul id="nav">
+                                          <li><a href="#">IAW-EM</a></li>
+                                          <li ng-repeat="namee in myPatient"><a href="#">{{namee}}</a></li>
+                                          <li><a href="#">Gallery</a></li>
+                                          <li><a href="#"><button type="button" class="btn btn-info " data-toggle="modal"  data-target="#myModal">Show audit details</button></a></li>
+                                      </ul> -->
+
+                                       <table >
+                                          <tr ng-repeat="namee in myPatient">
+                                            <td>{{myPatient.name}}</td>
+                                            <td>{{mrn}}</td>
+                                          </tr>
+                                         
+                                        </table> 
+                                        <button type="button" class="btn btn-info " data-toggle="modal" style="float: right;" data-target="#myModal">Show audit details</button>
+  
+                                    </nav> 
+                                    <div class="container">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-toggle="tab" data-target="#home1">Home</a></li>
+                                            <li><a data-toggle="tab" data-target="#menu1">History</a></li>
+                                            <li><a data-toggle="tab" data-target="#menu2">Diagnosis</a></li>
+                                            <li><a data-toggle="tab" data-target="#menu3">Review</a></li>
+                                          </ul>
+                                          <div class="tab-content">
+                                            <div id="home1" class="tab-pane fade in active">
+                                              <h3>HOME</h3>
+                                              <p></p>
+                                              <div>
+                                                <input type="button" id="browse-1" value="Patient">
+                                              </div>
+                                              <div id="tree"></div>
+                                            </div>
+                                            <div id="menu1" class="tab-pane fade">
+                                              <h3>History</h3>
+                                              <p>Admitted with fever and chills</p>
+                                            </div>
+                                            <div id="menu2" class="tab-pane fade">
+                                              <h3>Diagnosis</h3>
+                                              <p>Flu/ COVID-19</p>
+                                            </div>
+                                            <div id="menu3" class="tab-pane fade">
+                                              <h3>Review</h3>
+                                              <p>Patient was diagnoised with COVID-19. Treatment given requested for visit in 10 days</p>
+                                            </div>
+                                          </div>
+                                                                                
+                                    </div>
+                                    <div class="container">
+   
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal" role="dialog">
+                                          <div class="modal-dialog">
+                                          
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <nav style="background-color: blue;"></nav>
+
+                                              </div>
+                                              <div class="modal-body">
+                                                <p>Date of admission:</p>
+                                                <p>Date of discharge:</p>
+                                                <p>Amount:</p>
+                                                <p>Amount Paid:</p>
+                                                <p>Due Amount:</p>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              </div>
+                                            </div>
+                                            
+                                          </div>
+                                        </div>
+                                        
+                                      </div>
+		</script>
+    </div>
+    <script src="tree.js"></script>
+     <script src="example.js"></script>
+    <script>
+        var mainApp = angular.module("mainApp", ['ngRoute']);
+        mainApp.config(
+            ['$routeProvider', function ($routeProvider) {
+                $routeProvider.when('/addStudent', {
+                    templateUrl: 'addStudent.htm',
+                    controller: 'AddStudentController'
+                })
+                .when('/viewStudents', {
+                    templateUrl: 'viewStudents.htm',
+                    controller: 'ViewStudentsController'
+                })
+                .otherwise({
+                    redirectTo: '/addStudent'
+                });
+            }]);
+        mainApp.controller('AddStudentController', function ($scope, $location) {
+            //$scope.message = "Add The Students";
+
+            $scope.myObj = [{ "name": "Johan", "mrn": 301, "provider": "John", "risk": "Moderate", "review": "Complex" },
+            { "name": "Sean", "mrn": 302, "provider": "Joel", "risk": "Moderate", "review": "Complex" },
+            { "name": "Ryan", "mrn": 303, "provider": "Ray", "risk": "Moderate", "review": "Complex" }];
+
+
+            $scope.viewDetail = function (patient) {
+                console.log(patient);
+
+               
+
+              for ( i of $scope.myObj) {
+                console.log("i:", i.name);
+                if(i.name === patient.name){
+                  
+                  $scope.myPatient = patient;
+                  console.log("pat:",  $scope.myPatient);
+                }
+              }
+
+              $location.url('/viewStudents')
+            };
+
+        });
+        mainApp.controller('ViewStudentsController', function ($scope) {
+            
+            $scope.message = "Display all the students";
+        });
+    </script>
+     <script src="tree.js"></script>
+     <script src="example.js"></script>
+</body>
+
+</html>

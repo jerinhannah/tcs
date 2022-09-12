@@ -1,0 +1,22 @@
+#nav {
+    font-size: 20px;
+}
+
+#nav li {
+    border-left: 1px solid #C3C3C3;
+    float: left;
+    width: 25%;
+    text-align: center;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#nav li:first-child {
+    border: none;
+}
+
+#nav a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
